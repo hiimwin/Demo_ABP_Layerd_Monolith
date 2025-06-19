@@ -103,7 +103,7 @@ public class abpSourceCodeHttpApiHostModule : AbpModule
             {
                 options.DisableTransportSecurityRequirement = true;
             });
-            
+
             Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
@@ -118,8 +118,26 @@ public class abpSourceCodeHttpApiHostModule : AbpModule
         ConfigureSwagger(context, configuration);
         ConfigureVirtualFileSystem(context);
         ConfigureCors(context, configuration);
+        //ConfigurePolicy(context, configuration);
     }
-
+    // policy caan coi them
+    //private void ConfigurePolicy(ServiceConfigurationContext context, IConfiguration configuration)
+    //{
+    //    context.Services.AddAuthorization(options =>
+    //    {
+    //        //options.AddPolicy("BookAppService", policy =>
+    //        //{
+    //        //    policy.RequireAuthenticatedUser();
+    //        //    //policy.RequireClaim("scope", PermissionConsts.IntegrationService.Identity);
+    //        //    policy.RequireAssertion(context =>
+    //        //    {
+    //        //        var scopeClaim = context.User.FindFirst("scope")?.Value;
+    //        //        return scopeClaim != null &&
+    //        //               scopeClaim.Split(' ').Contains("BookAppService");
+    //        //    });
+    //        //});
+    //    });
+    //}
     private void ConfigureAuthentication(ServiceConfigurationContext context)
     {
         context.Services.ForwardIdentityAuthenticationForBearer(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
@@ -161,7 +179,6 @@ public class abpSourceCodeHttpApiHostModule : AbpModule
             );
         });
     }
-
 
     private void ConfigureVirtualFileSystem(ServiceConfigurationContext context)
     {

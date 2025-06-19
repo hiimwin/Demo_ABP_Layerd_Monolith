@@ -60,8 +60,11 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
     {
         if (await _openIddictScopeRepository.FindByNameAsync("abpSourceCode") == null)
         {
-            await _scopeManager.CreateAsync(new OpenIddictScopeDescriptor {
-                Name = "abpSourceCode", DisplayName = "abpSourceCode API", Resources = { "abpSourceCode" }
+            await _scopeManager.CreateAsync(new OpenIddictScopeDescriptor
+            {
+                Name = "abpSourceCode",
+                DisplayName = "abpSourceCode API",
+                Resources = { "abpSourceCode" }
             });
         }
     }
@@ -78,7 +81,6 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         };
 
         var configurationSection = _configuration.GetSection("OpenIddict:Applications");
-
 
         //Console Test / Angular Client
         var consoleAndAngularClientId = configurationSection["abpSourceCode_App:ClientId"];
@@ -108,12 +110,6 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             );
         }
 
-        
-        
-
-
-
-
         // Swagger Client
         var swaggerClientId = configurationSection["abpSourceCode_Swagger:ClientId"];
         if (!swaggerClientId.IsNullOrWhiteSpace())
@@ -134,7 +130,6 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 logoUri: "/images/clients/swagger.svg"
             );
         }
-
 
     }
 
@@ -167,7 +162,8 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
 
         var client = await _openIddictApplicationRepository.FindByClientIdAsync(name);
 
-        var application = new AbpApplicationDescriptor {
+        var application = new AbpApplicationDescriptor
+        {
             ApplicationType = applicationType,
             ClientId = name,
             ClientType = type,
@@ -303,9 +299,9 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                     application.RedirectUris.Add(uri);
                 }
             }
-            
+
         }
-        
+
         if (!postLogoutRedirectUris.IsNullOrEmpty())
         {
             foreach (var postLogoutRedirectUri in postLogoutRedirectUris!.Where(postLogoutRedirectUri => !postLogoutRedirectUri.IsNullOrWhiteSpace()))

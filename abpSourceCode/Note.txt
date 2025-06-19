@@ -1,6 +1,7 @@
 ﻿
 Layer Contracts 
    |--> Chứa các thư mục như là DTO, Interface Service
+   |--> Chứa các thông tin phân quyền cho user 
 Layer Application
    |--> Chứa các thư mục như là Service để triển khai từ Layer Contracts 
    |--> Chứa các thư mục để config Automapper
@@ -11,6 +12,7 @@ Layer EntityFrameworkCore
    |--> Chứa các file cấu hình của DBContext
 Layer Shared
    |--> Chứa các file như là enum 
+   |--> Chứa file en.json
 
 _ Các lệnh cần sử dụng 
   + dotnet run --migrate-database
@@ -18,3 +20,7 @@ _ Các lệnh cần sử dụng
   + dotnet ef migrations add Created_Book_Entity   (Cần triền khai trên Layer EntityFrameworkCore )
   + dotnet ef database update  (Cần triền khai trên Layer EntityFrameworkCore )
   + Ngoài ra có thể chạy layer DbMigrator  (Ưu tiền cái này)
+
+  _ Can Hoc
+  + Coi them openid Connect
+  + Coi them phan quyen voi permission, policy, feature

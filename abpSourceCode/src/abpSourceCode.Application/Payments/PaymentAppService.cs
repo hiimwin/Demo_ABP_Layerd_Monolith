@@ -1,4 +1,5 @@
 ﻿using abpSourceCode.Authors;
+using abpSourceCode.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,11 @@ namespace abpSourceCode.Payments
         public PaymentAppService(IRepository<Payment, Guid> repository)
             : base(repository)
         {
+            GetPolicyName = abpSourceCodePermissions.Payments.Default;
+            GetListPolicyName = abpSourceCodePermissions.Payments.Default;
+            CreatePolicyName = abpSourceCodePermissions.Payments.Create;
+            UpdatePolicyName = abpSourceCodePermissions.Payments.Edit;
+            DeletePolicyName = abpSourceCodePermissions.Payments.Delete;
         }
 
     }

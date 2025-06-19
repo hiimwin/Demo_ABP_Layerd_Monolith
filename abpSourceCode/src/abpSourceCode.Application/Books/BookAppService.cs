@@ -1,4 +1,6 @@
 ﻿using abpSourceCode.Categories;
+using abpSourceCode.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,7 @@ using Volo.Abp.Uow;
 
 namespace abpSourceCode.Books
 {
+    //[Authorize(policy: "BookAppService")]
     public class BookAppService : ApplicationService, IBookAppService
     {
         private readonly IRepository<Book, Guid> _repository;
@@ -43,7 +46,7 @@ namespace abpSourceCode.Books
                 await uow.CompleteAsync();
             }
         }
-
+        [Authorize(abpSourceCodePermissions.Books.Default)]
         public async Task<BookDto> GetAsync(Guid id)
         {
             var book = await _repository.GetAsync(id);

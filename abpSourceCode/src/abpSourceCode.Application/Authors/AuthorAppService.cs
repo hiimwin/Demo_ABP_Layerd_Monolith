@@ -1,4 +1,5 @@
-﻿using System;
+﻿using abpSourceCode.Permissions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,11 @@ namespace abpSourceCode.Authors
         public AuthorAppService(IRepository<Author, Guid> repository)
             : base(repository)
         {
-
+            GetPolicyName = abpSourceCodePermissions.Authors.Default;
+            GetListPolicyName = abpSourceCodePermissions.Authors.Default;
+            CreatePolicyName = abpSourceCodePermissions.Authors.Create;
+            UpdatePolicyName = abpSourceCodePermissions.Authors.Edit;
+            DeletePolicyName = abpSourceCodePermissions.Authors.Delete;
         }
     }
 }
