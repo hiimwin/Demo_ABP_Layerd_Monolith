@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Volo.Abp.EntityFrameworkCore;
@@ -12,9 +13,11 @@ using abpSourceCode.EntityFrameworkCore;
 namespace abpSourceCode.Migrations
 {
     [DbContext(typeof(abpSourceCodeDbContext))]
-    partial class abpSourceCodeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250619023239_Created_Entity_Framwork_Base")]
+    partial class Created_Entity_Framwork_Base
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1958,9 +1961,6 @@ namespace abpSourceCode.Migrations
 
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

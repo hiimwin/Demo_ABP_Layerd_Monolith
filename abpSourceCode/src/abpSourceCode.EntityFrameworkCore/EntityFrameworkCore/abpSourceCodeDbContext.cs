@@ -1,3 +1,10 @@
+using abpSourceCode.Authors;
+using abpSourceCode.Books;
+using abpSourceCode.Categories;
+using abpSourceCode.OrderItems;
+using abpSourceCode.Orders;
+using abpSourceCode.Payments;
+using abpSourceCode.Users;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -9,9 +16,9 @@ using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.EntityFrameworkCore;
+using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
-using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 
@@ -26,7 +33,6 @@ public class abpSourceCodeDbContext :
     IIdentityDbContext
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
-
 
     #region Entities from the modules
 
@@ -57,6 +63,14 @@ public class abpSourceCodeDbContext :
 
     #endregion
 
+    public DbSet<Author> Authors { get; set; }
+    public DbSet<Book> Books { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<Payment> Payments { get; set; }
+    public DbSet<UserInfor> UserInfors { get; set; }
+
     public abpSourceCodeDbContext(DbContextOptions<abpSourceCodeDbContext> options)
         : base(options)
     {
@@ -78,7 +92,7 @@ public class abpSourceCodeDbContext :
         builder.ConfigureOpenIddict();
         builder.ConfigureTenantManagement();
         builder.ConfigureBlobStoring();
-        
+
         /* Configure your own tables/entities inside here */
 
         //builder.Entity<YourEntity>(b =>
@@ -87,5 +101,53 @@ public class abpSourceCodeDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+        builder.Entity<Book>(b =>
+        {
+            b.ToTable(abpSourceCodeConsts.DbTablePrefix + "Books",
+                abpSourceCodeConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+        });
+
+        builder.Entity<UserInfor>(b =>
+        {
+            b.ToTable(abpSourceCodeConsts.DbTablePrefix + "UserInfors",
+                abpSourceCodeConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.HasOne(x => x.User)
+             .WithOne()
+             .HasForeignKey<UserInfor>(x => x.UserId)
+             .IsRequired();
+        });
+        builder.Entity<Author>(b =>
+        {
+            b.ToTable(abpSourceCodeConsts.DbTablePrefix + "Authors",
+                abpSourceCodeConsts.DbSchema);
+            b.ConfigureByConvention();
+        });
+        builder.Entity<Category>(b =>
+        {
+            b.ToTable(abpSourceCodeConsts.DbTablePrefix + "Categories",
+                abpSourceCodeConsts.DbSchema);
+            b.ConfigureByConvention();
+        });
+        builder.Entity<Order>(b =>
+        {
+            b.ToTable(abpSourceCodeConsts.DbTablePrefix + "Orders",
+                abpSourceCodeConsts.DbSchema);
+            b.ConfigureByConvention();
+        });
+        builder.Entity<Payment>(b =>
+        {
+            b.ToTable(abpSourceCodeConsts.DbTablePrefix + "Payments",
+                abpSourceCodeConsts.DbSchema);
+            b.ConfigureByConvention();
+        });
+        builder.Entity<OrderItem>(b =>
+        {
+            b.ToTable(abpSourceCodeConsts.DbTablePrefix + "OrderItems",
+                abpSourceCodeConsts.DbSchema);
+            b.ConfigureByConvention();
+        });
     }
 }
