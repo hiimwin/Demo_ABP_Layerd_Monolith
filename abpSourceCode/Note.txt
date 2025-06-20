@@ -21,6 +21,6 @@ _ Các lệnh cần sử dụng
   + dotnet ef database update  (Cần triền khai trên Layer EntityFrameworkCore )
   + Ngoài ra có thể chạy layer DbMigrator  (Ưu tiền cái này)
 
-  _ Can Hoc
-  + Coi them openid Connect
-  + Coi them phan quyen voi permission, policy, feature
+  _ Cần Học Thêm 
+  + Coi them openid Connect   (https://abp.io/docs/latest/modules/openiddict)
+  + Coi them phan quyen voi permission(Done), policy (Done), Features

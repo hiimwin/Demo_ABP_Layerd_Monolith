@@ -1,44 +1,46 @@
+﻿using abpSourceCode.EntityFrameworkCore;
+using abpSourceCode.HealthChecks;
+using abpSourceCode.MultiTenancy;
+using abpSourceCode.Permissions;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using OpenIddict.Server.AspNetCore;
+using OpenIddict.Validation.AspNetCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Extensions.DependencyInjection;
-using OpenIddict.Validation.AspNetCore;
-using OpenIddict.Server.AspNetCore;
-using abpSourceCode.EntityFrameworkCore;
-using abpSourceCode.MultiTenancy;
-using abpSourceCode.HealthChecks;
-using Microsoft.OpenApi.Models;
 using Volo.Abp;
-using Volo.Abp.Studio;
 using Volo.Abp.Account;
 using Volo.Abp.Account.Web;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc;
-using Volo.Abp.Autofac;
-using Volo.Abp.Localization;
-using Volo.Abp.Modularity;
-using Volo.Abp.UI.Navigation.Urls;
-using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite.Bundling;
-using Microsoft.AspNetCore.Hosting;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
+using Volo.Abp.Autofac;
 using Volo.Abp.Identity;
+using Volo.Abp.Localization;
+using Volo.Abp.Modularity;
 using Volo.Abp.OpenIddict;
-using Volo.Abp.Swashbuckle;
-using Volo.Abp.Studio.Client.AspNetCore;
 using Volo.Abp.Security.Claims;
+using Volo.Abp.Studio;
+using Volo.Abp.Studio.Client.AspNetCore;
+using Volo.Abp.Swashbuckle;
+using Volo.Abp.UI.Navigation.Urls;
+using Volo.Abp.VirtualFileSystem;
 
 namespace abpSourceCode;
 
@@ -61,6 +63,7 @@ public class abpSourceCodeHttpApiHostModule : AbpModule
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
 
+        // Khai báo OpenIddict Validation – OIDC Client
         PreConfigure<OpenIddictBuilder>(builder =>
         {
             builder.AddValidation(options =>
@@ -80,6 +83,7 @@ public class abpSourceCodeHttpApiHostModule : AbpModule
 
             PreConfigure<OpenIddictServerBuilder>(serverBuilder =>
             {
+                //serverBuilder.SetIssuer("https://localhost:44300"); // cai nay chua biet de lam gif
                 serverBuilder.AddProductionEncryptionAndSigningCertificate("openiddict.pfx", configuration["AuthServer:CertificatePassPhrase"]!);
                 serverBuilder.SetIssuer(new Uri(configuration["AuthServer:Authority"]!));
             });
@@ -118,7 +122,7 @@ public class abpSourceCodeHttpApiHostModule : AbpModule
         ConfigureSwagger(context, configuration);
         ConfigureVirtualFileSystem(context);
         ConfigureCors(context, configuration);
-        //ConfigurePolicy(context, configuration);
+        ConfigurePolicy(context);
     }
     // policy caan coi them
     //private void ConfigurePolicy(ServiceConfigurationContext context, IConfiguration configuration)
@@ -138,15 +142,49 @@ public class abpSourceCodeHttpApiHostModule : AbpModule
     //        //});
     //    });
     //}
+
+    private void ConfigurePolicy(ServiceConfigurationContext contex)
+    {
+        contex.Services.AddAuthorization(options =>
+        {
+            // options.AddPolicy(Policies.Admin, policy => policy.RequireRole(RoleName.Admin));
+            options.AddPolicy(ConstantPolicies.Admin, policy =>
+            {
+                // cấu hình police dựa theo role 
+                policy.RequireAuthenticatedUser();
+                policy.RequireRole("Admin");
+
+                // cấu hình policy dựa trên claims
+                //policy.RequireClaim("VIP", "True");
+                // add claim cho usẻr wait _userManager.AddClaimAsync(user, new Claim("VIP", "True"));
+
+            });
+
+        });
+    }
     private void ConfigureAuthentication(ServiceConfigurationContext context)
     {
+        var configuration = context.Services.GetConfiguration();
+
+        context.Services.AddAuthentication()
+            .AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = configuration["Authentication:Google:ClientId"]!;
+                googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"]!;
+                //googleOptions.CallbackPath = "/signin-google"; // Có thể đổi nếu muốn
+
+                //googleOptions.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
+                //googleOptions.ClaimActions.MapJsonKey("urn:google:locale", "locale", "string");
+                googleOptions.SaveTokens = true;
+            });
+
         context.Services.ForwardIdentityAuthenticationForBearer(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
         context.Services.Configure<AbpClaimsPrincipalFactoryOptions>(options =>
         {
             options.IsDynamicClaimsEnabled = true;
         });
     }
-
+    //Cấu hình AppUrlOptions để redirect đúng
     private void ConfigureUrls(IConfiguration configuration)
     {
         Configure<AppUrlOptions>(options =>
@@ -206,6 +244,7 @@ public class abpSourceCodeHttpApiHostModule : AbpModule
 
     private static void ConfigureSwagger(ServiceConfigurationContext context, IConfiguration configuration)
     {
+        //Giúp bạn test API trực tiếp trên Swagger UI, đăng nhập bằng OpenID Connect (OIDC).
         context.Services.AddAbpSwaggerGenWithOidc(
             configuration["AuthServer:Authority"]!,
             ["abpSourceCode"],
@@ -271,7 +310,7 @@ public class abpSourceCodeHttpApiHostModule : AbpModule
         app.UseAbpSecurityHeaders();
         app.UseCors();
         app.UseAuthentication();
-        app.UseAbpOpenIddictValidation();
+        app.UseAbpOpenIddictValidation(); // bắt buộc để validate access token
 
         if (MultiTenancyConsts.IsEnabled)
         {
