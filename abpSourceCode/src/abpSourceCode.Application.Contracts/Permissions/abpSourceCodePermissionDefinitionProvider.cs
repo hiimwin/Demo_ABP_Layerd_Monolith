@@ -1,4 +1,4 @@
-using abpSourceCode.Localization;
+﻿using abpSourceCode.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 using Volo.Abp.MultiTenancy;
@@ -13,6 +13,7 @@ public class abpSourceCodePermissionDefinitionProvider : PermissionDefinitionPro
 
         //Define your own permissions here. Example:
         //myGroup.AddPermission(abpSourceCodePermissions.MyPermission1, L("Permission:MyPermission1"));
+        // class này khi khai báo sẽ tạo ra các tên permision trong databae và có thể add theo nhiều kiểu khác nhau như (Roles)
 
         var booksPermission = myGroup.AddPermission(abpSourceCodePermissions.Books.Default, L("Permission:Books"));
         booksPermission.AddChild(abpSourceCodePermissions.Books.Create, L("Permission:Books.Create"));
