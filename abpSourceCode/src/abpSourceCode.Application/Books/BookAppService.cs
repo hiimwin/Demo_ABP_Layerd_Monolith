@@ -47,7 +47,7 @@ namespace abpSourceCode.Books
             }
         }
         //[Authorize(abpSourceCodePermissions.Books.Default)]
-        [Authorize(policy: ConstantPolicies.Admin)]
+        //[Authorize(policy: ConstantPolicies.Admin)]
         public async Task<BookDto> GetAsync(Guid id)
         {
             var book = await _repository.GetAsync(id);
