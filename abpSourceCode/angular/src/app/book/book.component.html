@@ -37,6 +37,11 @@
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column
+        [name]="'::Description' | abpLocalization"
+        prop="description"
+      ></ngx-datatable-column>
+
+      <ngx-datatable-column
         [name]="'::Actions' | abpLocalization"
         [maxWidth]="150"
         [sortable]="false"
@@ -54,6 +59,9 @@
             <div ngbDropdownMenu>
               <button ngbDropdownItem (click)="editBook(row.id)">
                 {{ '::Edit' | abpLocalization }}
+              </button>
+              <button ngbDropdownItem (click)="detailBook(row.id)">
+                {{ '::Detail' | abpLocalization }}
               </button>
               <!-- *abpPermission="'Multi_Layered.Books.Delete'" -->
               <button ngbDropdownItem (click)="delete(row.id)">
@@ -106,6 +114,11 @@
           ngbDatepicker
           (click)="datepicker.toggle()"
         />
+      </div>
+      <div class="mt-2">
+        <label for="book-description">Description</label>
+
+        <input type="text" id="description" class="form-control" formControlName="description" />
       </div>
     </form>
   </ng-template>

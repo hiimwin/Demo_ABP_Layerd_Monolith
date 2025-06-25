@@ -5,6 +5,7 @@ import { ConfirmationService, Confirmation } from '@abp/ng.theme.shared';
 import { BookService, BookDto, bookTypeOptions } from '../proxy/books';
 import { NgbDateNativeAdapter, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'; // add this
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-book',
@@ -25,7 +26,8 @@ export class BookComponent implements OnInit {
     public readonly list: ListService,
     private bookService: BookService,
     private fb: FormBuilder,
-    private confirmation: ConfirmationService
+    private confirmation: ConfirmationService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -44,11 +46,11 @@ export class BookComponent implements OnInit {
         Validators.required,
       ],
       price: [this.selectedBook.price || null, Validators.required],
+      description: [this.selectedBook.description || ''],
     });
   }
   // Add editBook method
   editBook(id: string) {
-    console.log('Editing book with ID:', id);
     // this.bookService.get(id).subscribe(book => {
     //   this.selectedBook = book;
     //   this.buildForm();
@@ -60,6 +62,11 @@ export class BookComponent implements OnInit {
       this.buildForm();
       this.isModalOpen = true;
     });
+  }
+  detailBook(id: string) {
+    // console.log('View Detail book with ID:', id);
+    // Muốn router thì cần phải import trong book-routing.module.ts
+    this.router.navigate(['/books', id]);
   }
 
   // add new method
@@ -81,7 +88,7 @@ export class BookComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    console.log('Form value:', this.form.value);
+    // console.log('Form value:', this.form.value);
     const request = this.selectedBook.id
       ? this.bookService.update(this.selectedBook.id, this.form.value)
       : this.bookService.create(this.form.value);
