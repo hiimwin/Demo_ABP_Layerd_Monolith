@@ -8,7 +8,8 @@
         <dt class="col-sm-3">Name</dt>
         <dd class="col-sm-9">{{ book.name }}</dd>
         <dt class="col-sm-3">Type</dt>
-        <dd class="col-sm-9">{{ book.type }}</dd>
+        <dd class="col-sm-9">{{ '::Enum:BookType.' + book.type | abpLocalization }}</dd>
+        <!-- <dd class="col-sm-9">{{ getBookTypeName(book.type) | abpLocalization }}</dd> -->
         <dt class="col-sm-3">Price</dt>
         <dd class="col-sm-9">{{ book.price }}</dd>
         <dt class="col-sm-3">Publish Date</dt>
