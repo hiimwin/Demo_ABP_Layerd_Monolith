@@ -18,18 +18,25 @@ function configureRoutes() {
       layout: eLayoutType.application,
     },
     // Hiển thị trên thanh menu || Nếu import đoạn này vào rồi thì sẽ có thể sài được abpLocalization trong html
-    {
-      path: '/book-store',
-      name: '::Menu:BookStore',
-      iconClass: 'fas fa-book',
-      order: 2,
-      layout: eLayoutType.application,
-    },
+    // {
+    //   path: '/book-store',
+    //   name: '::Menu:BookStore',
+    //   iconClass: 'fas fa-book',
+    //   order: 2,
+    //   layout: eLayoutType.application,
+    // },
+    // {
+    //   path: '/books',
+    //   name: '::Menu:Books',
+    //   parentName: '::Menu:BookStore',
+    //   layout: eLayoutType.application,
+    // },
     {
       path: '/books',
       name: '::Menu:Books',
-      parentName: '::Menu:BookStore',
+      iconClass: 'fas fa-book',
       layout: eLayoutType.application,
+      requiredPolicy: 'abpSourceCode.Books', // Chỉ hiển thị khi có quyền này
     },
   ]);
 }

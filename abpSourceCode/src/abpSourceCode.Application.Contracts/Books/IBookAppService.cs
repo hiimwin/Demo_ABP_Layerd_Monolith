@@ -1,4 +1,6 @@
-﻿using System;
+﻿using abpSourceCode.Permissions;
+using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,7 @@ using Volo.Abp.Application.Services;
 
 namespace abpSourceCode.Books
 {
+
     public interface IBookAppService :
          ICrudAppService< //Defines CRUD methods
              BookDto, //Used to show books

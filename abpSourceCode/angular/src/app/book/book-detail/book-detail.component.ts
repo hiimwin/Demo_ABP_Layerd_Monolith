@@ -6,7 +6,7 @@ import { BookDto, BookService, bookTypeOptions } from 'src/app/proxy/books';
 
 @Component({
   selector: 'app-book-detail',
-  imports: [CoreModule], // Import
+  imports: [CoreModule], // Import cái này vào để sử dụng abpLocalization trong html
   templateUrl: './book-detail.component.html',
   styleUrl: './book-detail.component.scss',
 })

@@ -16,6 +16,7 @@ using Volo.Abp.Uow;
 namespace abpSourceCode.Books
 {
     //[Authorize(policy: "BookAppService")]
+    [Authorize(abpSourceCodePermissions.Books.Default)]
     public class BookAppService : ApplicationService, IBookAppService
     {
         private readonly IRepository<Book, Guid> _repository;
@@ -26,7 +27,7 @@ namespace abpSourceCode.Books
             _unitOfWorkManager = unitOfWorkManager;
             _repository = repository;
         }
-
+        [Authorize(abpSourceCodePermissions.Books.Create)]
         public async Task<BookDto> CreateAsync(CreateUpdateBookDto input)
         {
             var book = ObjectMapper.Map<CreateUpdateBookDto, Book>(input);
@@ -37,7 +38,7 @@ namespace abpSourceCode.Books
             }
             return ObjectMapper.Map<Book, BookDto>(book);
         }
-
+        [Authorize(abpSourceCodePermissions.Books.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             using (var uow = _unitOfWorkManager.Begin(requiresNew: true))
@@ -69,7 +70,7 @@ namespace abpSourceCode.Books
                 ObjectMapper.Map<List<Book>, List<BookDto>>(books)
             );
         }
-
+        [Authorize(abpSourceCodePermissions.Books.Edit)]
         public async Task<BookDto> UpdateAsync(Guid id, CreateUpdateBookDto input)
         {
             var book = await _repository.GetAsync(id);
