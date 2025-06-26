@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BookDto, BookService, bookTypeOptions } from 'src/app/proxy/books';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'app-book-detail',
-  imports: [CoreModule], // Import cái này vào để sử dụng abpLocalization trong html
+  imports: [CoreModule, NgxDatatableModule], // Import cái này vào để sử dụng abpLocalization trong html
   templateUrl: './book-detail.component.html',
   styleUrl: './book-detail.component.scss',
 })

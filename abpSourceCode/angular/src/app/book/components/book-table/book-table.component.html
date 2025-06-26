@@ -1,0 +1,43 @@
+<ngx-datatable
+  class="bootstrap"
+  [rows]="books"
+  [count]="books.length"
+  [columnMode]="'force'"
+  [headerHeight]="50"
+  [rowHeight]="'auto'"
+  [footerHeight]="50"
+>
+  <ngx-datatable-column [name]="'::Name' | abpLocalization" prop="name"></ngx-datatable-column>
+
+  <ngx-datatable-column [name]="'::Type' | abpLocalization" prop="type">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{ '::Enum:BookType.' + row.type | abpLocalization }}
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column [name]="'::PublishDate' | abpLocalization" prop="publishDate">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{ row.publishDate | date }}
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column [name]="'::Price' | abpLocalization" prop="price">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{ row.price | currency }}
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column [name]="'::Description' | abpLocalization" prop="description">
+  </ngx-datatable-column>
+
+  <ngx-datatable-column [name]="'::Actions' | abpLocalization" [maxWidth]="150" [sortable]="false">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <app-book-actions
+        [book]="row"
+        (edit)="onEdit.emit($event)"
+        (delete)="onDelete.emit($event)"
+        (detail)="onDetail.emit($event)"
+      ></app-book-actions>
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>
