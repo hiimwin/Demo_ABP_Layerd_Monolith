@@ -25,14 +25,58 @@
   </div>
   <div class="card-body">
     <ngx-datatable [rows]="category.items" [count]="category.totalCount" [list]="list" default>
-      <!-- <ngx-datatable-column [name]="'::Name' | abpLocalization" prop="name"></ngx-datatable-column> -->
-      <ngx-datatable-column [name]="'::Name' | abpLocalization" prop="name"></ngx-datatable-column>
-      
-      <ngx-datatable-column
-        [name]="'::Description' | abpLocalization"
-        prop="description"
-      ></ngx-datatable-column>
+      <!-- NAME -->
+      <ngx-datatable-column [name]="'::Name' | abpLocalization" prop="name"> </ngx-datatable-column>
 
+      <!-- CODE -->
+      <ngx-datatable-column [name]="'::Code' | abpLocalization" prop="code"> </ngx-datatable-column>
+
+      <!-- SLUG -->
+      <ngx-datatable-column [name]="'::Slug' | abpLocalization" prop="slug"> </ngx-datatable-column>
+
+      <!-- DESCRIPTION (truncate nhẹ cho UI đẹp) -->
+      <ngx-datatable-column [name]="'::Description' | abpLocalization" prop="description">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row.description | slice: 0 : 50 }}{{ row.description?.length > 50 ? '...' : '' }}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <!-- IMAGE -->
+      <ngx-datatable-column [name]="'::Image' | abpLocalization">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <img
+            *ngIf="row.imageUrl"
+            [src]="row.imageUrl"
+            style="width: 50px; height: 40px; object-fit: cover; border-radius: 6px"
+          />
+        </ng-template>
+      </ngx-datatable-column>
+
+      <!-- SEO TITLE -->
+      <ngx-datatable-column [name]="'::SEO Title' | abpLocalization" prop="seoTitle">
+      </ngx-datatable-column>
+
+      <!-- SEO DESCRIPTION -->
+      <ngx-datatable-column [name]="'::SEO Description' | abpLocalization">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row.seoDescription | slice: 0 : 50 }}{{ row.seoDescription?.length > 50 ? '...' : '' }}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <!-- DISPLAY ORDER -->
+      <ngx-datatable-column [name]="'::DisplayOrder' | abpLocalization" prop="displayOrder">
+      </ngx-datatable-column>
+
+      <!-- STATUS -->
+      <ngx-datatable-column [name]="'::Status' | abpLocalization" prop="isActive">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span class="badge" [ngClass]="row.isActive ? 'bg-success' : 'bg-danger'">
+            {{ row.isActive ? 'Active' : 'Inactive' }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <!-- ACTIONS -->
       <ngx-datatable-column
         [name]="'::Actions' | abpLocalization"
         [maxWidth]="150"
@@ -40,14 +84,11 @@
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div ngbDropdown container="body" class="d-inline-block">
-            <button
-              class="btn btn-primary btn-sm dropdown-toggle"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              ngbDropdownToggle
-            >
-              <i class="fa fa-cog me-1"></i>{{ '::Actions' | abpLocalization }}
+            <button class="btn btn-primary btn-sm dropdown-toggle" ngbDropdownToggle>
+              <i class="fa fa-cog me-1"></i>
+              {{ '::Actions' | abpLocalization }}
             </button>
+
             <div ngbDropdownMenu>
               <button
                 *abpPermission="'abpSourceCode.Categories.Edit'"
@@ -56,6 +97,7 @@
               >
                 {{ '::Edit' | abpLocalization }}
               </button>
+
               <button
                 *abpPermission="'abpSourceCode.Categories'"
                 ngbDropdownItem
@@ -63,6 +105,7 @@
               >
                 {{ '::Detail' | abpLocalization }}
               </button>
+
               <button
                 *abpPermission="'abpSourceCode.Categories.Delete'"
                 ngbDropdownItem
@@ -87,15 +130,106 @@
 
   <ng-template #abpBody>
     <form [formGroup]="form" (ngSubmit)="save()">
-      <div class="mt-2">
-        <label for="category-name">Name</label><span> * </span>
-        <input type="text" id="category-name" class="form-control" formControlName="name" autofocus />
-      </div>
+      <div class="row">
+        <div class="col-md-6 mt-2">
+          <label for="category-name">Name</label>
+          <span> * </span>
 
-      <div class="mt-2">
-        <label for="category-description">Description</label>
+          <input
+            type="text"
+            id="category-name"
+            class="form-control"
+            formControlName="name"
+            autofocus
+          />
+        </div>
 
-        <input type="text" id="description" class="form-control" formControlName="description" />
+        <div class="col-md-6 mt-2">
+          <label for="category-code">Code</label>
+
+          <input type="text" id="category-code" class="form-control" formControlName="code" />
+        </div>
+
+        <div class="col-12 mt-2">
+          <label for="category-description">Description</label>
+
+          <textarea
+            id="category-description"
+            rows="3"
+            class="form-control"
+            formControlName="description"
+          >
+          </textarea>
+        </div>
+
+        <div class="col-md-6 mt-2">
+          <label for="category-slug">Slug</label>
+
+          <input type="text" id="category-slug" class="form-control" formControlName="slug" />
+        </div>
+
+        <div class="col-md-6 mt-2">
+          <label for="category-imageUrl">Image Url</label>
+
+          <input
+            type="text"
+            id="category-imageUrl"
+            class="form-control"
+            formControlName="imageUrl"
+          />
+        </div>
+
+        <div class="col-md-6 mt-2">
+          <textarea
+            id="category-seoDescription"
+            rows="3"
+            class="form-control"
+            formControlName="seoDescription"
+          ></textarea>
+
+          <input
+            type="text"
+            id="category-seoTitle"
+            class="form-control"
+            formControlName="seoTitle"
+          />
+        </div>
+
+        <!-- <div class="col-md-6 mt-2">
+          <label for="category-displayOrder"> Display Order </label>
+
+          <input
+            type="number"
+            id="category-displayOrder"
+            class="form-control"
+            formControlName="displayOrder"
+          />
+        </div>
+
+        <div class="col-12 mt-2">
+          <label for="category-seoDescription"> SEO Description </label>
+
+          <textarea
+            id="category-seoDescription"
+            rows="3"
+            class="form-control"
+            formControlName="seoDescription"
+          >
+          </textarea>
+        </div> -->
+
+        <div class="col-12 mt-3">
+          <div class="form-check">
+            <input
+              type="checkbox"
+              id="category-isActive"
+              class="form-check-input"
+              formControlName="isActive"
+            />
+
+            <label for="category-isActive" class="form-check-label"> Active </label>
+          </div>
+        </div>
       </div>
     </form>
   </ng-template>

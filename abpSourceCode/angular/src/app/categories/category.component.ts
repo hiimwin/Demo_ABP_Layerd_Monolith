@@ -36,11 +36,47 @@ export class CategoryComponent implements OnInit {
     });
   }
   buildForm() {
-    this.form = this.fb.group({
-      name: [this.selectedCategory.name || '', Validators.required],
-      description: [this.selectedCategory.description || ''],
-    });
-  }
+  this.form = this.fb.group({
+
+    name: [
+      this.selectedCategory.name || '',
+      Validators.required
+    ],
+
+    code: [
+      this.selectedCategory.code || '',
+    ],
+
+    description: [
+      this.selectedCategory.description || '',
+    ],
+
+    slug: [
+      this.selectedCategory.slug || '',
+    ],
+
+    imageUrl: [
+      this.selectedCategory.imageUrl || '',
+    ],
+
+    seoTitle: [
+      this.selectedCategory.seoTitle || '',
+    ],
+
+    seoDescription: [
+      this.selectedCategory.seoDescription || '',
+    ],
+
+    displayOrder: [
+      this.selectedCategory.displayOrder || 0,
+    ],
+
+    isActive: [
+      this.selectedCategory.isActive ?? true,
+    ],
+
+  });
+}
   // Add editCategory method
   editCategory(id: string) {
     this.categoryService.get(id).subscribe(category => {

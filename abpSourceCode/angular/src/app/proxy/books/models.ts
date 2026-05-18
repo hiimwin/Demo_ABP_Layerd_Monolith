@@ -7,8 +7,8 @@ export interface BookDto extends AuditedEntityDto<string> {
   publishDate?: string;
   price: number;
   description?: string;
-  // authorId?: string;
-  // categoryId?: string;
+  authorId?: string;
+  categoryId?: string;
 }
 
 export interface CreateUpdateBookDto {
@@ -17,6 +17,6 @@ export interface CreateUpdateBookDto {
   publishDate?: string;
   price: number;
   description?: string;
-  // authorId?: string;
-  // categoryId?: string;
+  authorId?: string;
+  categoryId?: string;
 }

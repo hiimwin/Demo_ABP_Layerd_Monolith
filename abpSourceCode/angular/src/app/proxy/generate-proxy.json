@@ -1356,7 +1356,7 @@
                 "type": "abpSourceCode.Books.BookDto",
                 "typeSimple": "abpSourceCode.Books.BookDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "Volo.Abp.Application.Services.ICreateAppService<abpSourceCode.Books.BookDto,abpSourceCode.Books.CreateUpdateBookDto>"
             },
             "DeleteAsyncById": {
@@ -1393,7 +1393,7 @@
                 "type": "System.Void",
                 "typeSimple": "System.Void"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "Volo.Abp.Application.Services.IDeleteAppService<System.Guid>"
             },
             "GetAsyncById": {
@@ -1491,7 +1491,7 @@
                 "type": "Volo.Abp.Application.Dtos.PagedResultDto<abpSourceCode.Books.BookDto>",
                 "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<abpSourceCode.Books.BookDto>"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<abpSourceCode.Books.BookDto,abpSourceCode.Books.BookDto,System.Guid,Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto>"
             },
             "UpdateAsyncByIdAndInput": {
@@ -1548,7 +1548,7 @@
                 "type": "abpSourceCode.Books.BookDto",
                 "typeSimple": "abpSourceCode.Books.BookDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "Volo.Abp.Application.Services.IUpdateAppService<abpSourceCode.Books.BookDto,System.Guid,abpSourceCode.Books.CreateUpdateBookDto>"
             }
           }
@@ -1696,7 +1696,7 @@
                 "type": "abpSourceCode.Categories.CategoryDto",
                 "typeSimple": "abpSourceCode.Categories.CategoryDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "Volo.Abp.Application.Services.ICreateAppService<abpSourceCode.Categories.CategoryDto,abpSourceCode.Categories.CreateUpdateCategoryDto>"
             },
             "DeleteAsyncById": {
@@ -1733,7 +1733,7 @@
                 "type": "System.Void",
                 "typeSimple": "System.Void"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "Volo.Abp.Application.Services.IDeleteAppService<System.Guid>"
             },
             "GetAsyncById": {
@@ -1770,7 +1770,7 @@
                 "type": "abpSourceCode.Categories.CategoryDto",
                 "typeSimple": "abpSourceCode.Categories.CategoryDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<abpSourceCode.Categories.CategoryDto,abpSourceCode.Categories.CategoryDto,System.Guid,Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto>"
             },
             "GetListAsyncByInput": {
@@ -1831,7 +1831,7 @@
                 "type": "Volo.Abp.Application.Dtos.PagedResultDto<abpSourceCode.Categories.CategoryDto>",
                 "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<abpSourceCode.Categories.CategoryDto>"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<abpSourceCode.Categories.CategoryDto,abpSourceCode.Categories.CategoryDto,System.Guid,Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto>"
             },
             "UpdateAsyncByIdAndInput": {
@@ -1888,7 +1888,7 @@
                 "type": "abpSourceCode.Categories.CategoryDto",
                 "typeSimple": "abpSourceCode.Categories.CategoryDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "Volo.Abp.Application.Services.IUpdateAppService<abpSourceCode.Categories.CategoryDto,System.Guid,abpSourceCode.Categories.CreateUpdateCategoryDto>"
             }
           }

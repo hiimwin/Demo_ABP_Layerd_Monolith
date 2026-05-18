@@ -1,15 +1,107 @@
 <div class="container mt-4">
-  <div class="card shadow rounded">
-    <div class="card-header bg-primary text-white">
-      <h4><i class="fa fa-category me-2"></i>category Detail</h4>
+  <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+    <div class="card-header bg-primary text-white py-3">
+      <h4 class="mb-0">
+        <i class="fa fa-folder-open me-2"></i>
+        Category Detail
+      </h4>
     </div>
-    <div class="card-body">
+
+    <div class="card-body p-4">
+      <!-- Category Image -->
+      <div class="text-center mb-4" *ngIf="category.imageUrl">
+        <img
+          [src]="category.imageUrl"
+          [alt]="category.name"
+          class="img-fluid rounded shadow"
+          style="max-height: 250px; object-fit: cover"
+        />
+      </div>
+
+      <!-- Category Info -->
       <dl class="row">
-        <dt class="col-sm-3">Name</dt>
+        <dt class="col-sm-3 fw-bold">Name</dt>
         <dd class="col-sm-9">{{ category.name }}</dd>
-        <dt class="col-sm-3">Description</dt>
+
+        <dt class="col-sm-3 fw-bold">Code</dt>
+        <dd class="col-sm-9">
+          <span class="badge bg-dark">
+            {{ category.code }}
+          </span>
+        </dd>
+
+        <dt class="col-sm-3 fw-bold">Description</dt>
         <dd class="col-sm-9">{{ category.description }}</dd>
+
+        <dt class="col-sm-3 fw-bold">Slug</dt>
+        <dd class="col-sm-9 text-primary">
+          {{ category.slug }}
+        </dd>
+
+        <dt class="col-sm-3 fw-bold">SEO Title</dt>
+        <dd class="col-sm-9">
+          {{ category.seoTitle }}
+        </dd>
+
+        <dt class="col-sm-3 fw-bold">SEO Description</dt>
+        <dd class="col-sm-9">
+          {{ category.seoDescription }}
+        </dd>
+
+        <dt class="col-sm-3 fw-bold">Display Order</dt>
+        <dd class="col-sm-9">
+          {{ category.displayOrder }}
+        </dd>
+
+        <dt class="col-sm-3 fw-bold">Status</dt>
+        <dd class="col-sm-9">
+          <span class="badge" [ngClass]="category.isActive ? 'bg-success' : 'bg-danger'">
+            {{ category.isActive ? 'Active' : 'Inactive' }}
+          </span>
+        </dd>
       </dl>
+
+      <hr class="my-4" />
+
+      <!-- Books Section -->
+      <div>
+        <h5 class="mb-3">
+          <i class="fa fa-book me-2 text-primary"></i>
+          Books in this Product Categories
+        </h5>
+
+        <div *ngIf="category.books?.length; else noBooks">
+          <div class="row">
+            <div class="col-md-6 col-lg-4 mb-3" *ngFor="let book of category.books">
+              <div class="card h-100 shadow-sm border-0 rounded-3">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    {{ book.name }}
+                  </h5>
+
+                  <p class="text-muted mb-2">
+                    {{ book.type }}
+                  </p>
+
+                  <p class="mb-2">
+                    <strong>Price:</strong>
+                    ${{ book.price }}
+                  </p>
+
+                  <p class="mb-2">
+                    <strong>Publish Date:</strong>
+                    {{ book.publishDate | date }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noBooks>
+          <div class="alert alert-warning mb-0">No books found in this category.</div>
+        </ng-template>
+      </div>
     </div>
   </div>
 </div>
