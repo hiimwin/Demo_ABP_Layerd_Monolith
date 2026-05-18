@@ -1,4 +1,6 @@
 ﻿using abpSourceCode.Books;
+using abpSourceCode.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,7 @@ using Volo.Abp.Uow;
 
 namespace abpSourceCode.Categories
 {
+    [Authorize(abpSourceCodePermissions.Categories.Default)]
     public class CategoryAppService : ApplicationService, ICategoryAppService
     {
         private readonly IRepository<Category, Guid> _repository;
@@ -24,6 +27,7 @@ namespace abpSourceCode.Categories
             _unitOfWorkManager = unitOfWorkManager;
         }
 
+        [Authorize(abpSourceCodePermissions.Categories.Create)]
         public async Task<CategoryDto> CreateAsync(CreateUpdateCategoryDto input)
         {
             var category = ObjectMapper.Map<CreateUpdateCategoryDto, Category>(input);
@@ -35,6 +39,7 @@ namespace abpSourceCode.Categories
             return ObjectMapper.Map<Category, CategoryDto>(category);
         }
 
+        [Authorize(abpSourceCodePermissions.Categories.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             using (var uow = _unitOfWorkManager.Begin(requiresNew: true))
@@ -83,6 +88,7 @@ namespace abpSourceCode.Categories
             );
         }
 
+        [Authorize(abpSourceCodePermissions.Categories.Edit)]
         public async Task<CategoryDto> UpdateAsync(Guid id, CreateUpdateCategoryDto input)
         {
             var category = await _repository.GetAsync(id);

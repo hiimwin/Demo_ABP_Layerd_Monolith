@@ -29,6 +29,11 @@ public class abpSourceCodePermissionDefinitionProvider : PermissionDefinitionPro
         payments.AddChild(abpSourceCodePermissions.Payments.Create, L("Permission:Payments.Create"));
         payments.AddChild(abpSourceCodePermissions.Payments.Edit, L("Permission:Payments.Edit"));
         payments.AddChild(abpSourceCodePermissions.Payments.Delete, L("Permission:Payments.Delete"));
+
+        var categoriesPermission = myGroup.AddPermission(abpSourceCodePermissions.Categories.Default, L("Permission:Categories"));
+        categoriesPermission.AddChild(abpSourceCodePermissions.Categories.Create, L("Permission:Categories.Create"));
+        categoriesPermission.AddChild(abpSourceCodePermissions.Categories.Edit, L("Permission:Categories.Edit"));
+        categoriesPermission.AddChild(abpSourceCodePermissions.Categories.Delete, L("Permission:BoCategoriesoks.Delete"));
     }
 
     private static LocalizableString L(string name)

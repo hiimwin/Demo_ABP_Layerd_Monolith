@@ -1,7 +1,7 @@
 {
   "Culture": "en",
   "Texts": {
-    "AppName": "abpSourceCode",
+    "AppName": "Win_Trung Book Store",
     "Menu:Home": "Home",
     "Menu:abpSourceCode": "Book Store",
     "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information visit",
@@ -13,6 +13,7 @@
     "Permission:Books.Delete": "Deleting the books",
     "Menu:BookStore": "Book Store",
     "Menu:Books": "Books",
+    "Menu:Categories": "Product Categories",
     "Actions": "Actions",
     "Close": "Close",
     "Delete": "Delete",

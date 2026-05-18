@@ -38,5 +38,12 @@ function configureRoutes() {
       layout: eLayoutType.application,
       requiredPolicy: 'abpSourceCode.Books', // Chỉ hiển thị khi có quyền này
     },
+    {
+      path: '/categories',
+      name: '::Menu:Categories',
+      iconClass: 'fas fa-list',
+      layout: eLayoutType.application,
+      requiredPolicy: 'abpSourceCode.Categories', // Chỉ hiển thị khi có quyền này
+    },
   ]);
 }
