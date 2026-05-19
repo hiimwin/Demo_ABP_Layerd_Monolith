@@ -27,7 +27,7 @@ namespace abpSourceCode.Categories
 
         public bool IsActive { get; set; }
 
-        public List<Guid> books { get; set; } = new List<Guid>();
+        public List<Guid> Books { get; set; } = new List<Guid>();
 
     }
 }

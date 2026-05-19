@@ -19,5 +19,6 @@ namespace abpSourceCode.Books
              CreateUpdateBookDto> //Used to create/update a book
     {
         //Task<List<BookDto>> GetBooksByAuthorAsync(string authorName); // Tự handler lại nên cần khai báo 
+        Task UpdateBooksAsync(Guid categoryId, List<Guid> newBookIds);
     }
 }

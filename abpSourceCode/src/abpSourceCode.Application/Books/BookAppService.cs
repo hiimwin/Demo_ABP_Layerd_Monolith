@@ -12,6 +12,7 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Uow;
+using static abpSourceCode.Permissions.abpSourceCodePermissions;
 
 namespace abpSourceCode.Books
 {
@@ -82,6 +83,19 @@ namespace abpSourceCode.Books
             }
 
             return ObjectMapper.Map<Book, BookDto>(book);
+        }
+
+        [Authorize(abpSourceCodePermissions.Categories.Edit)]
+        public async Task UpdateBooksAsync(Guid categoryId, List<Guid> bookIds)
+        {
+            var books = await _repository.GetListAsync(x => bookIds.Contains(x.Id));
+
+            books.ForEach(book => book.CategoryId = categoryId);
+
+            using (var uow = _unitOfWorkManager.Begin(requiresNew: true))
+            {
+                await uow.CompleteAsync();
+            }
         }
     }
 }

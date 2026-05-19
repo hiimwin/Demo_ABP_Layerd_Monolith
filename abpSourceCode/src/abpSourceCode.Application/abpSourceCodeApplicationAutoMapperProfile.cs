@@ -23,7 +23,7 @@ public class abpSourceCodeApplicationAutoMapperProfile : Profile
         CreateMap<CreateUpdateAuthorDto, Author>();
 
         CreateMap<Category, CategoryDto>();
-        CreateMap<CreateUpdateCategoryDto, Category>();
+        CreateMap<CreateUpdateCategoryDto, Category>().ForMember(dest => dest.Books, opt => opt.Ignore());
 
         CreateMap<Order, OrderDto>();
         CreateMap<CreateUpdateOrderDto, Order>();
