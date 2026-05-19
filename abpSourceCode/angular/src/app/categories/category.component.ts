@@ -36,48 +36,48 @@ export class CategoryComponent implements OnInit {
     });
   }
   buildForm() {
-  this.form = this.fb.group({
+    this.form = this.fb.group({
 
-    name: [
-      this.selectedCategory.name || '',
-      Validators.required
-    ],
+      name: [
+        this.selectedCategory.name || '',
+        Validators.required
+      ],
 
-    code: [
-      this.selectedCategory.code || '',
-    ],
+      code: [
+        this.selectedCategory.code || '',
+      ],
 
-    description: [
-      this.selectedCategory.description || '',
-    ],
+      description: [
+        this.selectedCategory.description || '',
+      ],
 
-    slug: [
-      this.selectedCategory.slug || '',
-    ],
+      slug: [
+        this.selectedCategory.slug || '',
+      ],
 
-    imageUrl: [
-      this.selectedCategory.imageUrl || '',
-    ],
+      imageUrl: [
+        this.selectedCategory.imageUrl || '',
+      ],
 
-    seoTitle: [
-      this.selectedCategory.seoTitle || '',
-    ],
+      seoTitle: [
+        this.selectedCategory.seoTitle || '',
+      ],
 
-    seoDescription: [
-      this.selectedCategory.seoDescription || '',
-    ],
+      seoDescription: [
+        this.selectedCategory.seoDescription || '',
+      ],
 
-    displayOrder: [
-      this.selectedCategory.displayOrder || 0,
-    ],
+      displayOrder: [
+        this.selectedCategory.displayOrder || 0,
+      ],
 
-    isActive: [
-      this.selectedCategory.isActive ?? true,
-    ],
+      isActive: [
+        this.selectedCategory.isActive ?? true,
+      ],
 
-  });
-}
-  // Add editCategory method
+    });
+  }
+  // Add editCategory method (form)
   editCategory(id: string) {
     this.categoryService.get(id).subscribe(category => {
       this.selectedCategory = category;
@@ -85,6 +85,13 @@ export class CategoryComponent implements OnInit {
       this.isModalOpen = true;
     });
   }
+
+  //Add editCategory method (detail page)
+  editCategoryForm(id: string) {
+    this.router.navigate(['/categories/edit', id]);
+  }
+
+
   detailCategory(id: string) {
     // console.log('View Detail category with ID:', id);
     // Muốn router thì cần phải import trong category-routing.module.ts

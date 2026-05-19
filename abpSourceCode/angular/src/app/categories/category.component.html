@@ -93,7 +93,7 @@
               <button
                 *abpPermission="'abpSourceCode.Categories.Edit'"
                 ngbDropdownItem
-                (click)="editCategory(row.id)"
+                (click)="editCategoryForm(row.id)"
               >
                 {{ '::Edit' | abpLocalization }}
               </button>
@@ -180,12 +180,7 @@
         </div>
 
         <div class="col-md-6 mt-2">
-          <textarea
-            id="category-seoDescription"
-            rows="3"
-            class="form-control"
-            formControlName="seoDescription"
-          ></textarea>
+          <label for="category-seoTitle"> SEO Title </label>
 
           <input
             type="text"
@@ -195,7 +190,7 @@
           />
         </div>
 
-        <!-- <div class="col-md-6 mt-2">
+        <div class="col-md-6 mt-2">
           <label for="category-displayOrder"> Display Order </label>
 
           <input
@@ -216,7 +211,7 @@
             formControlName="seoDescription"
           >
           </textarea>
-        </div> -->
+        </div>
 
         <div class="col-12 mt-3">
           <div class="form-check">

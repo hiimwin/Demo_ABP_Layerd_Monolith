@@ -1,0 +1,17 @@
+<abp-modal [(visible)]="visible">
+  <ng-template #abpHeader>
+    <h3>Select Books</h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <div *ngFor="let b of books">
+      <input type="checkbox" [checked]="isSelected(b.id)" (change)="onSelect($event, b)" />
+      {{ b.name }}
+    </div>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+    <button class="btn btn-primary" (click)="confirm()">Confirm</button>
+  </ng-template>
+</abp-modal>

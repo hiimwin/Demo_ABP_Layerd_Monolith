@@ -7,7 +7,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace abpSourceCode.Categories
 {
-    public class CreateUpdateCategoryDto : AuditedEntityDto<Guid>
+    public class CreateUpdateCategoryDto
     {
         public string Name { get; set; }
 
@@ -26,5 +26,8 @@ namespace abpSourceCode.Categories
         public int DisplayOrder { get; set; }
 
         public bool IsActive { get; set; }
+
+        public List<Guid> books { get; set; } = new List<Guid>();
+
     }
 }

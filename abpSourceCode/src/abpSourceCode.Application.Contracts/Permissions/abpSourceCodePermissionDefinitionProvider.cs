@@ -33,7 +33,7 @@ public class abpSourceCodePermissionDefinitionProvider : PermissionDefinitionPro
         var categoriesPermission = myGroup.AddPermission(abpSourceCodePermissions.Categories.Default, L("Permission:Categories"));
         categoriesPermission.AddChild(abpSourceCodePermissions.Categories.Create, L("Permission:Categories.Create"));
         categoriesPermission.AddChild(abpSourceCodePermissions.Categories.Edit, L("Permission:Categories.Edit"));
-        categoriesPermission.AddChild(abpSourceCodePermissions.Categories.Delete, L("Permission:BoCategoriesoks.Delete"));
+        categoriesPermission.AddChild(abpSourceCodePermissions.Categories.Delete, L("Permission:Categories.Delete"));
     }
 
     private static LocalizableString L(string name)

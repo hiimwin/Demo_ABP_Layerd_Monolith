@@ -20,11 +20,13 @@ namespace abpSourceCode.Categories
     {
         private readonly IRepository<Category, Guid> _repository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly IRepository<Book, Guid> _bookRepository;
 
-        public CategoryAppService(IRepository<Category, Guid> repository, IUnitOfWorkManager unitOfWorkManager)
+        public CategoryAppService(IRepository<Category, Guid> repository, IUnitOfWorkManager unitOfWorkManager, IRepository<Book, Guid> bookRepository)
         {
             _repository = repository;
             _unitOfWorkManager = unitOfWorkManager;
+            _bookRepository = bookRepository;
         }
 
         [Authorize(abpSourceCodePermissions.Categories.Create)]
@@ -89,17 +91,57 @@ namespace abpSourceCode.Categories
         }
 
         [Authorize(abpSourceCodePermissions.Categories.Edit)]
+        //public async Task<CategoryDto> UpdateAsync(Guid id, CreateUpdateCategoryDto input)
+        //{
+        //    var category = await _repository.GetAsync(id);
+        //    ObjectMapper.Map(input, category);
+        //    using (var uow = _unitOfWorkManager.Begin(requiresNew: true))
+        //    {
+        //        await _repository.UpdateAsync(category);
+        //        await uow.CompleteAsync();
+        //    }
+
+        //    return ObjectMapper.Map<Category, CategoryDto>(category);
+        //}
+
         public async Task<CategoryDto> UpdateAsync(Guid id, CreateUpdateCategoryDto input)
         {
-            var category = await _repository.GetAsync(id);
-            ObjectMapper.Map(input, category);
             using (var uow = _unitOfWorkManager.Begin(requiresNew: true))
             {
-                await _repository.UpdateAsync(category);
-                await uow.CompleteAsync();
-            }
+                var category = await _repository.GetAsync(id, includeDetails: true);
 
-            return ObjectMapper.Map<Category, CategoryDto>(category);
+                ObjectMapper.Map(input, category);
+
+                await UpdateBooksAsync(category, input.books);
+
+                await _repository.UpdateAsync(category);
+
+                await uow.CompleteAsync();
+
+                return ObjectMapper.Map<Category, CategoryDto>(category);
+            }
+        }
+
+        private async Task UpdateBooksAsync(Category category, List<Guid> newBookIds)
+        {
+            newBookIds ??= new List<Guid>();
+
+            var currentBookIds = category.Books.Select(b => b.Id).ToList();
+
+            var toAddIds = newBookIds.Except(currentBookIds).ToList();
+            var toRemoveIds = currentBookIds.Except(newBookIds).ToList();
+
+            category.Books.RemoveAll(b => toRemoveIds.Contains(b.Id));
+
+            if (toAddIds.Any())
+            {
+                var books = await _bookRepository.GetListAsync(x => toAddIds.Contains(x.Id));
+
+                foreach (var book in books)
+                {
+                    category.Books.Add(book);
+                }
+            }
         }
     }
 }
