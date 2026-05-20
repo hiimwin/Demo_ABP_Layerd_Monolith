@@ -185,7 +185,6 @@ export class BookComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-debugger
     const request = this.selectedBook.id
       ? this.bookService.update(
           this.selectedBook.id,

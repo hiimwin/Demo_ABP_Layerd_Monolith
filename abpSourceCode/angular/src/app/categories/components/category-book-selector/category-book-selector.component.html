@@ -1,13 +1,82 @@
-<abp-modal [(visible)]="visible">
+<abp-modal
+  [(visible)]="visible"
+  [options]="{ size: 'lg' }"
+  (visibleChange)="handleModalChange($event)"
+>
   <ng-template #abpHeader>
-    <h3>Select Books</h3>
+    <h5 class="card-title">
+      {{ '::Menu:Books' | abpLocalization }}
+    </h5>
   </ng-template>
 
   <ng-template #abpBody>
-    <div *ngFor="let b of books">
-      <input type="checkbox" [checked]="isSelected(b.id)" (change)="onSelect($event, b)" />
-      {{ b.name }}
-    </div>
+    <!-- <ngx-datatable [rows]="books" [count]="bookCount" [list]="list" default></ngx-datatable> -->
+    <h5>
+      {{ '::SelectBooks' | abpLocalization }}
+    </h5>
+    <ngx-datatable
+      [rows]="initBook.items"
+      [count]="initBook.totalCount"
+      [limit]="5"
+      [footerHeight]="50"
+      (sort)="onCustomBookSort($event)"
+      default
+    >
+      <ngx-datatable-column [name]="Selected" prop="selected" [sortable]="true" [width]="50">
+        <ng-template ngx-datatable-cell-template let-row="row">
+          <input type="checkbox" [checked]="isSelected(row.id)" (change)="onSelect($event, row)" />
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [name]="'::Name' | abpLocalization" prop="name"></ngx-datatable-column>
+
+      <ngx-datatable-column [name]="'::Type' | abpLocalization" prop="type">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ '::Enum:BookType.' + row.type | abpLocalization }}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [name]="'::Price' | abpLocalization" prop="price">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row.price | currency }}
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+
+    <!-- <hr class="divider" style="border-width: 3px" /> -->
+
+    <!-- detailbooks -->
+    <h5>{{ '::Detail:Books' | abpLocalization }}</h5>
+    <ngx-datatable
+      [rows]="bookOfCategory.items"
+      [count]="bookOfCategory.totalCount"
+      [limit]="5"
+      [footerHeight]="50"
+      default
+    >
+      <ngx-datatable-column [name]="'::Name' | abpLocalization" prop="name"></ngx-datatable-column>
+
+      <ngx-datatable-column [name]="'::Type' | abpLocalization" prop="type">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ '::Enum:BookType.' + row.type | abpLocalization }}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [name]="'::PublishDate' | abpLocalization" prop="publishDate">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row.publishDate | date }}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [name]="'::Price' | abpLocalization" prop="price">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row.price | currency }}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [name]="'::Description' | abpLocalization" prop="description">
+      </ngx-datatable-column>
+    </ngx-datatable>
   </ng-template>
 
   <ng-template #abpFooter>

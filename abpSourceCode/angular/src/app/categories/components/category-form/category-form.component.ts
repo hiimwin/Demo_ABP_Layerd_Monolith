@@ -33,13 +33,15 @@ import { CategoryBookSelectorComponent } from '../category-book-selector/categor
 })
 export class CategoryFormComponent implements OnInit {
   category = { items: [], totalCount: 0 } as PagedResultDto<CategoryDto>;
-  book = { items: [], totalCount: 0 } as PagedResultDto<BookDto>;
+  initBook = {items: [], totalCount: 0} as PagedResultDto<BookDto>;
+  categoryId: string | null = null; 
   selectedBook: BookDto = {} as BookDto;
   selectedBooks: BookDto[] = [];
   selectedCategory = {} as CategoryDto;
   form!: FormGroup;
   isEdit = false;
   isOpenBook = false;
+  clearTrigger = false
 
   constructor(
     private route: ActivatedRoute,
@@ -57,16 +59,8 @@ export class CategoryFormComponent implements OnInit {
       this.category = response;
     });
     
-    const bookStreamCreator = query => this.bookService.getList(query);
-      this.list.hookToQuery(bookStreamCreator).subscribe(response => {
-      const filteredItems = response?.items?.filter(s => s.categoryId === null) ?? [];
-      this.book = {
-        items: filteredItems,
-        totalCount: filteredItems.length // Hoặc response?.totalCount nếu muốn giữ tổng gốc
-      };
-    });
-
     const id = this.route.snapshot.paramMap.get('id');
+    this.categoryId = id;
     this.buildForm();
     if (id) {
       this.isEdit = true;
@@ -74,6 +68,15 @@ export class CategoryFormComponent implements OnInit {
         this.selectedCategory = data;
         this.form.patchValue(data); 
       });
+
+      const bookStreamCreator = query => this.bookService.getList(query);
+      this.list.hookToQuery(bookStreamCreator).subscribe(response => {
+      const filteredItems = response?.items ?? [];
+      this.initBook = {
+        items: filteredItems,
+        totalCount: filteredItems.length
+      }
+    });
     } 
   }
 
@@ -134,9 +137,14 @@ export class CategoryFormComponent implements OnInit {
       ...this.form.value,
       books: this.selectedBooks.map(x => x.id)
     };
-    debugger
+    const hasBooks = this.selectedBooks?.length > 0;
     this.categoryService.update(id, request).subscribe({
       next: () => {
+        if(hasBooks) {
+          this.selectedBooks = [];
+          this.clearTrigger = !this.clearTrigger;
+          this.list.get();
+        }
         this.toaster.success('Updated successfully');
       },
       error: () => {
@@ -156,13 +164,14 @@ export class CategoryFormComponent implements OnInit {
             this.back();
         },
         error: () => {
-        this.toaster.error('Create failed');
+          this.toaster.error('Create failed');
         }
     });
   }
 
   openBookSelector() {
     this.isOpenBook = true;
+
   }
 
   handleBooksSelected(books: BookDto[]) {
@@ -171,7 +180,10 @@ export class CategoryFormComponent implements OnInit {
         this.selectedBooks.push(b);
       }
     });
-    console.log(this.selectedBooks)
+  }
+
+  onModalClosed() {
+    this.isOpenBook = false;
   }
 }
 

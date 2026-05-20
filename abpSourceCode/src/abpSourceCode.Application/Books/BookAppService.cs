@@ -88,13 +88,25 @@ namespace abpSourceCode.Books
         [Authorize(abpSourceCodePermissions.Categories.Edit)]
         public async Task UpdateBooksAsync(Guid categoryId, List<Guid> bookIds)
         {
-            var books = await _repository.GetListAsync(x => bookIds.Contains(x.Id));
+            var selectedIds = bookIds.ToHashSet();
 
-            books.ForEach(book => book.CategoryId = categoryId);
+            var books = await _repository.GetListAsync(
+                x => bookIds.Contains(x.Id) || x.CategoryId == categoryId
+            );
 
-            using (var uow = _unitOfWorkManager.Begin(requiresNew: true))
+            foreach (var book in books)
             {
-                await uow.CompleteAsync();
+                if (selectedIds.Contains(book.Id))
+                {
+                    if (book.CategoryId != categoryId)
+                    {
+                        book.CategoryId = categoryId;
+                    }
+                }
+                else if (book.CategoryId == categoryId)
+                {
+                    book.CategoryId = null;
+                }
             }
         }
     }
